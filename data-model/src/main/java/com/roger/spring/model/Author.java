@@ -1,32 +1,36 @@
 package com.roger.spring.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
 
+
+/**
+ * The persistent class for the author database table.
+ * 
+ */
 @Entity
 @Table(name="author")
-public class Author {
+@NamedQuery(name="Author.findAll", query="SELECT a FROM Author a")
+public class Author implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	@Column(name="idAuthor")
 	private int idAuthor;
-	
-	@Column(name="firstName")
+
 	private String firstName;
-	
-	@Column(name="lastName")
+
 	private String lastName;
 
+	//bi-directional many-to-many association to Book
+	@ManyToMany(mappedBy="authors")
+	private List<Book> books;
+
 	public Author() {
-		
 	}
 
 	public int getIdAuthor() {
-		return idAuthor;
+		return this.idAuthor;
 	}
 
 	public void setIdAuthor(int idAuthor) {
@@ -34,7 +38,7 @@ public class Author {
 	}
 
 	public String getFirstName() {
-		return firstName;
+		return this.firstName;
 	}
 
 	public void setFirstName(String firstName) {
@@ -42,13 +46,19 @@ public class Author {
 	}
 
 	public String getLastName() {
-		return lastName;
+		return this.lastName;
 	}
 
 	public void setLastName(String lastName) {
 		this.lastName = lastName;
 	}
-	
-	
-	
+
+	public List<Book> getBooks() {
+		return this.books;
+	}
+
+	public void setBooks(List<Book> books) {
+		this.books = books;
+	}
+
 }

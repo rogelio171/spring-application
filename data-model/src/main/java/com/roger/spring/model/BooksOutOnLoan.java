@@ -1,105 +1,106 @@
 package com.roger.spring.model;
 
+import java.io.Serializable;
+import javax.persistence.*;
 import java.math.BigDecimal;
-import java.sql.Date;
+import java.util.Date;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
-import javax.persistence.Temporal;
-import javax.persistence.TemporalType;
 
+/**
+ * The persistent class for the books_out_on_loan database table.
+ * 
+ */
 @Entity
 @Table(name="books_out_on_loan")
-public class BooksOutOnLoan {
+@NamedQuery(name="BooksOutOnLoan.findAll", query="SELECT b FROM BooksOutOnLoan b")
+public class BooksOutOnLoan implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	@Column(name="idBookBorrowing")
 	private int idBookBorrowing;
-	
-	@Column(name="borrowedStudentId")
-	private int borrowedStudentId;
-	
-	@Column(name="isbn")
-	private String isbn;
-	
-	@Column(name="data_issued")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataIssued;
-	
-	@Column(name="data_due_for_return")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataDueForReturn;
-	
-	@Column(name="data_returned")
-	@Temporal(TemporalType.TIMESTAMP)
-	private Date dataReturned;
-	
-	@Column(name="amount_of_fine", precision=10, scale=2)
+
+	@Column(name="amount_of_fine")
 	private BigDecimal amountOfFine;
 
-	public BooksOutOnLoan() {
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="data_due_for_return")
+	private Date dataDueForReturn;
 
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="data_issued")
+	private Date dataIssued;
+
+	@Temporal(TemporalType.TIMESTAMP)
+	@Column(name="data_returned")
+	private Date dataReturned;
+
+	//bi-directional many-to-one association to Book
+	@ManyToOne
+	@JoinColumn(name="isbn")
+	private Book book;
+
+	//bi-directional many-to-one association to Student
+	@ManyToOne
+	@JoinColumn(name="borrowerStudent_id")
+	private Student student;
+
+	public BooksOutOnLoan() {
 	}
 
 	public int getIdBookBorrowing() {
-		return idBookBorrowing;
+		return this.idBookBorrowing;
 	}
 
 	public void setIdBookBorrowing(int idBookBorrowing) {
 		this.idBookBorrowing = idBookBorrowing;
 	}
 
-	public int getBorrowedStudentId() {
-		return borrowedStudentId;
+	public BigDecimal getAmountOfFine() {
+		return this.amountOfFine;
 	}
 
-	public void setBorrowedStudentId(int borrowedStudentId) {
-		this.borrowedStudentId = borrowedStudentId;
-	}
-
-	public String getIsbn() {
-		return isbn;
-	}
-
-	public void setIsbn(String isbn) {
-		this.isbn = isbn;
-	}
-
-	public Date getDataIssued() {
-		return dataIssued;
-	}
-
-	public void setDataIssued(Date dataIssued) {
-		this.dataIssued = dataIssued;
+	public void setAmountOfFine(BigDecimal amountOfFine) {
+		this.amountOfFine = amountOfFine;
 	}
 
 	public Date getDataDueForReturn() {
-		return dataDueForReturn;
+		return this.dataDueForReturn;
 	}
 
 	public void setDataDueForReturn(Date dataDueForReturn) {
 		this.dataDueForReturn = dataDueForReturn;
 	}
 
+	public Date getDataIssued() {
+		return this.dataIssued;
+	}
+
+	public void setDataIssued(Date dataIssued) {
+		this.dataIssued = dataIssued;
+	}
+
 	public Date getDataReturned() {
-		return dataReturned;
+		return this.dataReturned;
 	}
 
 	public void setDataReturned(Date dataReturned) {
 		this.dataReturned = dataReturned;
 	}
 
-	public BigDecimal getAmountOfFine() {
-		return amountOfFine;
+	public Book getBook() {
+		return this.book;
 	}
 
-	public void setAmountOfFine(BigDecimal amountOfFine) {
-		this.amountOfFine = amountOfFine;
+	public void setBook(Book book) {
+		this.book = book;
 	}
-	
-	
+
+	public Student getStudent() {
+		return this.student;
+	}
+
+	public void setStudent(Student student) {
+		this.student = student;
+	}
+
 }

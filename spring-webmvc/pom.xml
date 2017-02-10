@@ -7,9 +7,7 @@
     <artifactId>spring-application</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>com.roger.spring</groupId>
   <artifactId>spring-webmvc</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>spring-webmvc</name>
   <packaging>war</packaging>
   <url>http://maven.apache.org</url>

@@ -7,10 +7,8 @@
     <artifactId>spring-application</artifactId>
     <version>1.0-SNAPSHOT</version>
   </parent>
-  <groupId>com.roger.spring</groupId>
   <artifactId>spring-services</artifactId>
   <packaging>jar</packaging>
-  <version>1.0-SNAPSHOT</version>
   <name>spring-services</name>
   <url>http://maven.apache.org</url>
   <properties>

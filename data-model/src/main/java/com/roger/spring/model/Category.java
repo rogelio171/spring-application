@@ -1,53 +1,73 @@
 package com.roger.spring.model;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import java.io.Serializable;
+import javax.persistence.*;
+import java.util.List;
 
+
+/**
+ * The persistent class for the category database table.
+ * 
+ */
 @Entity
 @Table(name="category")
-public class Category {
+@NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
+public class Category implements Serializable {
+	private static final long serialVersionUID = 1L;
 
 	@Id
-	@GeneratedValue
-	@Column(name="idCategory")
 	private int idCategory;
-	
-	@Column(name="name")
-	private String name;
-	
-	@Column(name="description")
+
 	private String description;
 
+	private String name;
+
+	//bi-directional many-to-many association to Book
+	@ManyToMany
+	@JoinTable(
+		name="books_by_category"
+		, joinColumns={
+			@JoinColumn(name="idCategory")
+			}
+		, inverseJoinColumns={
+			@JoinColumn(name="isbn")
+			}
+		)
+	private List<Book> books;
+
 	public Category() {
-		
 	}
 
 	public int getIdCategory() {
-		return idCategory;
+		return this.idCategory;
 	}
 
 	public void setIdCategory(int idCategory) {
 		this.idCategory = idCategory;
 	}
 
+	public String getDescription() {
+		return this.description;
+	}
+
+	public void setDescription(String description) {
+		this.description = description;
+	}
+
 	public String getName() {
-		return name;
+		return this.name;
 	}
 
 	public void setName(String name) {
 		this.name = name;
 	}
 
-	public String getDescription() {
-		return description;
+	public List<Book> getBooks() {
+		return this.books;
 	}
 
-	public void setDescription(String description) {
-		this.description = description;
+	public void setBooks(List<Book> books) {
+		this.books = books;
 	}
-	
-	
+
 }
