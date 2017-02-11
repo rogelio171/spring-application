@@ -5,14 +5,15 @@
   <parent>
     <groupId>com.roger.spring</groupId>
     <artifactId>spring-application</artifactId>
-    <version>1.0-SNAPSHOT</version>
+    <version>1.0</version>
   </parent>
-  <groupId>com.roger.spring</groupId>
+  
   <artifactId>spring-webmvc</artifactId>
-  <version>1.0-SNAPSHOT</version>
   <name>spring-webmvc</name>
+  <version>1.0</version>
   <packaging>war</packaging>
   <url>http://maven.apache.org</url>
+  
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
@@ -28,4 +29,4 @@
     	</plugin>
     </plugins>
   </build>
-</project>
+  </project>
