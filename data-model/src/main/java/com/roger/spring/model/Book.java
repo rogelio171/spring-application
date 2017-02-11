@@ -1,9 +1,23 @@
 package com.roger.spring.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
 import java.util.Date;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.OneToMany;
+import javax.persistence.Table;
+import javax.persistence.Temporal;
+import javax.persistence.TemporalType;
 
 
 /**
@@ -12,39 +26,33 @@ import java.util.List;
  */
 @Entity
 @Table(name="books")
-@NamedQuery(name="Book.findAll", query="SELECT b FROM Book b")
+@NamedQuery(name = "Book.findByTitle", query = "SELECT b FROM Book b WHERE b.title = ?1")
 public class Book implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private String isbn;
+    @Column(name = "isbn", unique = true, nullable = false, length = 14)
+    private String isbn;
 
-	@Temporal(TemporalType.DATE)
-	@Column(name="date_of_publication")
-	private Date dateOfPublication;
+    @Column(name = "title", nullable = false)
+    private String title;
 
-	private String title;
+    @Temporal(TemporalType.DATE)
+    @Column(name = "date_of_publication", length = 0)
+    private Date dateOfPublication;
 
 	//bi-directional many-to-many association to Author
-	@ManyToMany
-	@JoinTable(
-		name="books_by_author"
-		, joinColumns={
-			@JoinColumn(name="isbn")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="idAuthor")
-			}
-		)
-	private List<Author> authors;
+	@ManyToMany(fetch = FetchType.EAGER, mappedBy = "books", cascade = CascadeType.ALL)
+    private Set<Author> authors = new HashSet<Author>();
 
-	//bi-directional many-to-many association to Category
-	@ManyToMany(mappedBy="books")
-	private List<Category> categories;
+    @ManyToMany(fetch = FetchType.EAGER, cascade = CascadeType.ALL)
+    @JoinTable(name = "books_by_category", joinColumns = {
+        @JoinColumn(name = "isbn", nullable = false, updatable = false) }, inverseJoinColumns = {
+        @JoinColumn(name = "idCategory", nullable = false, updatable = false) })
+    private Set<Category> categories = new HashSet<Category>();
 
-	//bi-directional many-to-one association to BooksOutOnLoan
-	@OneToMany(mappedBy="book")
-	private List<BooksOutOnLoan> booksOutOnLoans;
+    @OneToMany(fetch = FetchType.EAGER, mappedBy = "book", cascade = CascadeType.ALL)
+    private Set<BooksOutOnLoan> booksOutOnLoan = new HashSet<BooksOutOnLoan>();
 
 	public Book() {
 	}
@@ -73,28 +81,28 @@ public class Book implements Serializable {
 		this.title = title;
 	}
 
-	public List<Author> getAuthors() {
+	public Set<Author> getAuthors() {
 		return this.authors;
 	}
 
-	public void setAuthors(List<Author> authors) {
+	public void setAuthors(Set<Author> authors) {
 		this.authors = authors;
 	}
 
-	public List<Category> getCategories() {
+	public Set<Category> getCategories() {
 		return this.categories;
 	}
 
-	public void setCategories(List<Category> categories) {
+	public void setCategories(Set<Category> categories) {
 		this.categories = categories;
 	}
 
-	public List<BooksOutOnLoan> getBooksOutOnLoans() {
-		return this.booksOutOnLoans;
+	public Set<BooksOutOnLoan> getBooksOutOnLoans() {
+		return this.booksOutOnLoan;
 	}
 
-	public void setBooksOutOnLoans(List<BooksOutOnLoan> booksOutOnLoans) {
-		this.booksOutOnLoans = booksOutOnLoans;
+	public void setBooksOutOnLoans(Set<BooksOutOnLoan> booksOutOnLoans) {
+		this.booksOutOnLoan = booksOutOnLoans;
 	}
 
 	public BooksOutOnLoan addBooksOutOnLoan(BooksOutOnLoan booksOutOnLoan) {
@@ -110,5 +118,13 @@ public class Book implements Serializable {
 
 		return booksOutOnLoan;
 	}
+
+	@Override
+	public String toString() {
+		return "Book [isbn=" + isbn + ", title=" + title + ", dateOfPublication=" + dateOfPublication + ", authors="
+				+ authors + "]";
+	}
+	
+	
 
 }

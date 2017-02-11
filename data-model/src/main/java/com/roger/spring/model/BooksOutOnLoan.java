@@ -12,37 +12,39 @@ import java.util.Date;
  */
 @Entity
 @Table(name="books_out_on_loan")
-@NamedQuery(name="BooksOutOnLoan.findAll", query="SELECT b FROM BooksOutOnLoan b")
+@NamedQuery(name = "BooksOutOnLoan.findByStudent", query = "SELECT b FROM BooksOutOnLoan b WHERE b.student.idStudent = ?1")
 public class BooksOutOnLoan implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idBookBorrowing;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idBookBorrowing", unique = true, nullable = false)
+    private Integer idBookBorrowing;
 
-	@Column(name="amount_of_fine")
-	private BigDecimal amountOfFine;
+	@Column(name = "amount_of_fine", precision = 10, scale = 2)
+    private BigDecimal amountOfFine;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="data_due_for_return")
-	private Date dataDueForReturn;
+    @Column(name = "data_due_for_return", length = 0)
+    private Date dataDueForReturn;
 
 	@Temporal(TemporalType.TIMESTAMP)
 	@Column(name="data_issued")
 	private Date dataIssued;
 
 	@Temporal(TemporalType.TIMESTAMP)
-	@Column(name="data_returned")
-	private Date dataReturned;
+    @Column(name = "data_returned", length = 0)
+    private Date dataReturned;
 
 	//bi-directional many-to-one association to Book
-	@ManyToOne
-	@JoinColumn(name="isbn")
-	private Book book;
+	@ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "isbn")
+    private Book book;
 
 	//bi-directional many-to-one association to Student
-	@ManyToOne
-	@JoinColumn(name="borrowerStudent_id")
-	private Student student;
+	@ManyToOne (fetch = FetchType.LAZY)
+    @JoinColumn(name = "borrowerStudent_id", nullable = false)
+    private Student student;
 
 	public BooksOutOnLoan() {
 	}
@@ -101,6 +103,13 @@ public class BooksOutOnLoan implements Serializable {
 
 	public void setStudent(Student student) {
 		this.student = student;
+	}
+
+	@Override
+	public String toString() {
+		return "BooksOutOnLoan [idBookBorrowing=" + idBookBorrowing + ", student=" + student + ", book=" + book
+				+ ", dataIssued=" + dataIssued + ", dataDueForReturn=" + dataDueForReturn + ", dataReturned="
+				+ dataReturned + ", amountOfFine=" + amountOfFine + "]";
 	}
 
 }

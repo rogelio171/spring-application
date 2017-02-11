@@ -1,8 +1,19 @@
 package com.roger.spring.model;
 
 import java.io.Serializable;
-import javax.persistence.*;
-import java.util.List;
+import java.util.HashSet;
+import java.util.Set;
+
+import javax.persistence.CascadeType;
+import javax.persistence.Column;
+import javax.persistence.Entity;
+import javax.persistence.FetchType;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.ManyToMany;
+import javax.persistence.NamedQuery;
+import javax.persistence.Table;
 
 
 /**
@@ -11,29 +22,23 @@ import java.util.List;
  */
 @Entity
 @Table(name="category")
-@NamedQuery(name="Category.findAll", query="SELECT c FROM Category c")
+@NamedQuery(name="Category.findAll", query = "SELECT c FROM Category c WHERE c.name = ?1")
 public class Category implements Serializable {
 	private static final long serialVersionUID = 1L;
 
 	@Id
-	private int idCategory;
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "idCategory", unique = true, nullable = false)
+    private Integer idCategory;
 
-	private String description;
+    @Column(name = "name", nullable = false, length = 45)
+    private String name;
 
-	private String name;
+    @Column(name = "description")
+    private String description;
 
-	//bi-directional many-to-many association to Book
-	@ManyToMany
-	@JoinTable(
-		name="books_by_category"
-		, joinColumns={
-			@JoinColumn(name="idCategory")
-			}
-		, inverseJoinColumns={
-			@JoinColumn(name="isbn")
-			}
-		)
-	private List<Book> books;
+    @ManyToMany(fetch = FetchType.EAGER, mappedBy = "categories", cascade = CascadeType.ALL)
+    private Set<Book> books = new HashSet<Book>();
 
 	public Category() {
 	}
@@ -62,12 +67,17 @@ public class Category implements Serializable {
 		this.name = name;
 	}
 
-	public List<Book> getBooks() {
+	public Set<Book> getBooks() {
 		return this.books;
 	}
 
-	public void setBooks(List<Book> books) {
+	public void setBooks(Set<Book> books) {
 		this.books = books;
+	}
+
+	@Override
+	public String toString() {
+		return "Category [name=" + name + ", description=" + description + "]";
 	}
 
 }
