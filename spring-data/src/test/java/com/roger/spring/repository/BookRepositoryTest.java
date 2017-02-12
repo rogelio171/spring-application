@@ -20,7 +20,15 @@ public class BookRepositoryTest extends PersistenceJPAConfigTest {
 	@Test
 	public void findAllBooks(){		
 		List<Book> books = bookRepository.findAll();
-		Assert.assertTrue(books.isEmpty());
+		Assert.assertFalse(books.isEmpty());
+	}
+	
+	@Test
+	public void findByTitle(){		
+		String titleExpected = "Java";
+		List<Book> books = bookRepository.findByTitle(titleExpected);
+		String titleActual = books.get(0).getTitle();
+		Assert.assertTrue(titleActual.contains(titleExpected));
 	}
 
 }
