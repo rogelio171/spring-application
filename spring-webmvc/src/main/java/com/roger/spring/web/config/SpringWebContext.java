@@ -22,7 +22,7 @@ import nz.net.ultraq.thymeleaf.decorators.strategies.GroupingStrategy;
 
 @EnableWebMvc
 @Configuration
-@ComponentScan(basePackages = { "com.accenture.web.controller" })
+@ComponentScan(basePackages = { "com.roger.spring.web.controller" })
 public class SpringWebContext extends WebMvcConfigurerAdapter implements ApplicationContextAware {
 	private ApplicationContext applicationContext;
 	

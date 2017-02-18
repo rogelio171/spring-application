@@ -2,13 +2,14 @@ package com.roger.spring.web.config.core;
 
 import org.springframework.web.servlet.support.AbstractAnnotationConfigDispatcherServletInitializer;
 
+import com.roger.spring.config.ServiceContext;
 import com.roger.spring.web.config.SpringWebContext;
 
 public class MyWebInitializer extends AbstractAnnotationConfigDispatcherServletInitializer {
 
 	@Override
 	protected Class<?>[] getRootConfigClasses() {
-		return null;
+		return new Class[] {ServiceContext.class };
 	}
 
 	@Override

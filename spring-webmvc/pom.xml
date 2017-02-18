@@ -12,7 +12,6 @@
 	<artifactId>spring-webmvc</artifactId>
 	<name>spring-webmvc</name>
 	<version>1.0</version>
-	<packaging>war</packaging>
 	<url>http://maven.apache.org</url>
 
 	<properties>
@@ -39,6 +38,12 @@
 	</properties>
 
 	<dependencies>
+		<dependency>
+			<groupId>com.roger.spring</groupId>
+			<artifactId>spring-services</artifactId>
+			<version>1.0</version>
+		</dependency>
+		
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -178,14 +183,8 @@
 	<build>
 		<plugins>
 			<plugin>
-				<groupId>org.apache.maven.plugins</groupId>
-				<artifactId>maven-war-plugin</artifactId>
-				<version>2.6</version>
-				<configuration>
-					<failOnMissingWebXml>false</failOnMissingWebXml>
-				</configuration>
+				<artifactId>maven-compiler-plugin</artifactId>
 			</plugin>
-			
 			<plugin>
 				<groupId>org.eclipse.jetty</groupId>
 				<artifactId>jetty-maven-plugin</artifactId>
@@ -195,6 +194,18 @@
 					<webApp>
 						<contextPath>/spring4-v1</contextPath>
 					</webApp>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<wtpversion>2.0</wtpversion>
+					<wtpContextName>spring4-v1</wtpContextName>
 				</configuration>
 			</plugin>
 		</plugins>
