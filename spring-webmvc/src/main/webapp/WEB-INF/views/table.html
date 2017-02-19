@@ -1,31 +1,75 @@
 <!DOCTYPE html>
-<html xmlns:th="http://www.thymeleaf.org"
-	xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout">
+<html xmlns:th="http://www.thymeleaf.org">
 
 <head>
 
 <meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
 <link th:href="@{/static/css/demo.css}" rel="stylesheet" />
 <link th:href="@{/static/css/styles.css}" rel="stylesheet" />
-<link href="https://code.jquery.com/ui/1.12.0/themes/base/jquery-ui.css"
-	th:href="@{/webjars/jquery-ui-themes/1.11.4/south-street/jquery-ui.min.css}"
-	rel="stylesheet" />
+<link th:href="@{/static/css/buttons.jqueryui.min.css}" rel="stylesheet" />
+<link th:href="@{/static/css/select.jqueryui.min.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jquery-ui.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jquery.dataTables.css}" rel="stylesheet" />
+
+<script type="text/javascript" th:inline="javascript" th:src="@{/webjars/jquery/3.1.1/dist/jquery.min.js}" ></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/jquery-ui.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/jquery.dataTables.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.jqueryui.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.buttons.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/buttons.jqueryui.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.select.min.js}"></script>
 	
+<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function(){
+		
+		var table = $('#datatable').DataTable({
+			"ajax" : /*[[@{/datatables/ajax}]]*/,
+			"columns" : [
+				{"aaData" : "isbn"},
+				{"aaData" : "title"},
+				{"aaData" : "date"}
+			]
+		});
+		
+	});
+</script>
+
 <title>Spring Framework</title>
 
 </head>
 
 <body class="dt-example">
 
-	<div class="container">
-		<section>
-			<h1>Spring Framework <span>MVC Example</span></h1>
-		</section>
+	<div align="center">
+	
+		<h1>Books</h1>
+		<h1>
+			<a th:href="@{/newBook}"><span>New Book</span></a>
+		</h1>
+		
+		<div id = "default_form">
+			<table id="datatable" class="display">
+				<thead>
+					<tr>
+						<th>ISBN</th>
+						<th>Title</th>
+						<th>Date of Publication</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>ISBN</th>
+						<th>Title</th>
+						<th>Date of Publication</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+		
 	</div>
 
-	<div class="epilogue">
-		<p class="copyright">2017</p>
-	</div>
+	
 
 </body>
 

@@ -20,20 +20,19 @@
 		<slf4j_version>1.7.12</slf4j_version>
 		<log4j_version>1.2.17</log4j_version>
 		<spring_version>4.3.6.RELEASE</spring_version>
-		
+
 		<!-- Thymeleaf libraries -->
 		<thymeleaf_version>3.0.2.RELEASE</thymeleaf_version>
 		<thymeleaf_layout_dialect_version>2.1.2</thymeleaf_layout_dialect_version>
-		
+
 		<!-- Javascript dependencies -->
 		<webjars_bootstrap_version>3.3.6</webjars_bootstrap_version>
 		<webjars_jquery_ui_version>1.11.4</webjars_jquery_ui_version>
 		<jquery_ui_themes_version>1.11.4</jquery_ui_themes_version>
-		<webjars_jquery_version>2.2.4</webjars_jquery_version>
-		<jquery_ui_themes_version>1.11.4</jquery_ui_themes_version>
+		<webjars_jquery_version>3.1.1</webjars_jquery_version>
 		<moment_version>2.14.1</moment_version>
-		<toastr_version>2.1.2</toastr_version>                 
-		
+		<toastr_version>2.1.2</toastr_version>
+
 		<javax_servlet_api_version>3.1.0</javax_servlet_api_version>
 	</properties>
 
@@ -43,12 +42,18 @@
 			<artifactId>spring-services</artifactId>
 			<version>1.0</version>
 		</dependency>
-		
+
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
 			<version>${commonsLang3_version}</version>
 			<scope>compile</scope>
+		</dependency>
+		
+		<dependency>
+		    <groupId>org.json</groupId>
+		    <artifactId>json</artifactId>
+		    <version>20160810</version>
 		</dependency>
 
 		<!-- SLF4 dependencies -->

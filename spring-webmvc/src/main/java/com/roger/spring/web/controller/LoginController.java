@@ -1,12 +1,26 @@
 package com.roger.spring.web.controller;
 
+import java.util.List;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
+import org.springframework.ui.ModelMap;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.servlet.ModelAndView;
+
+import com.roger.spring.model.Book;
+import com.roger.spring.repository.BookRepository;
 
 @Controller
 public class LoginController {
@@ -30,6 +44,9 @@ public class LoginController {
 			"I::::::::I      tt:::::::::::tt               w:::w           w:::w         oo:::::::::::oo  r:::::r           k::::::k   k:::::ks:::::::::::ss  !!:!!!!:!!\n" + 
 			"IIIIIIIIII        ttttttttttt                  www             www            ooooooooooo    rrrrrrr           kkkkkkkk    kkkkkkksssssssssss     !!!  !!!";
 	
+	@Autowired
+	protected BookRepository bookRepository;
+	
 	@GetMapping("/")
 	public String login() {
 		
@@ -44,6 +61,32 @@ public class LoginController {
 	public String datatable() {
 		LOGGER.info("Inside datatable method");
 		return "table";
+	}
+	
+	@GetMapping("/datatables/ajax")
+	public @ResponseBody String getBookGrid(HttpServletRequest request, HttpSession session, ModelMap model) {
+		List<Book> books = bookRepository.findAll();
+		
+		JSONArray data = new JSONArray();
+		JSONObject jsonResponse = new JSONObject();
+		
+		try {
+			if(books != null) {
+				for (Book book: books) {
+					JSONArray row  = new JSONArray();
+					row.put(book.getIsbn())
+					   .put(book.getTitle())
+					   .put(book.getDateOfPublication());
+					
+					data.put(row);
+				}
+			}
+			jsonResponse.put("aaData", data);
+		} catch (JSONException e) {
+			LOGGER.error(e.getMessage());
+		}
+		
+		return jsonResponse.toString();
 	}
 	
 	@PostMapping("/redirect")

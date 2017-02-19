@@ -18,7 +18,13 @@ fieldset {
 	margin-top: 50px;
 }
 
-label, input {
+label {
+	display: block;
+	margin-bottom: 5px;
+	width:90%;
+}
+
+input {
 	display: block;
 	margin-bottom: 5px;
 	width:98%;
