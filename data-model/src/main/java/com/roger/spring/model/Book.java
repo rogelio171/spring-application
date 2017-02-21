@@ -19,6 +19,8 @@ import javax.persistence.Table;
 import javax.persistence.Temporal;
 import javax.persistence.TemporalType;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 
 /**
  * The persistent class for the books database table.
@@ -37,8 +39,9 @@ public class Book implements Serializable {
     @Column(name = "title", nullable = false)
     private String title;
 
-    @Temporal(TemporalType.DATE)
-    @Column(name = "date_of_publication", length = 0)
+    @Temporal(TemporalType.TIMESTAMP)
+    @Column(name = "date_of_publication")
+    @JsonFormat(shape=JsonFormat.Shape.STRING, pattern="dd/MM/yyyy")
     private Date dateOfPublication;
 
 	//bi-directional many-to-many association to Author

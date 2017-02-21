@@ -1,0 +1,187 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link th:href="@{/static/css/demo.css}" rel="stylesheet" />
+<link th:href="@{/static/css/styles.css}" rel="stylesheet" />
+<link th:href="@{/static/css/buttons.jqueryui.min.css}" rel="stylesheet" />
+<link th:href="@{/static/css/select.jqueryui.min.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jquery-ui.css}" rel="stylesheet" />
+<link th:href="@{/static/css/jquery.dataTables.css}" rel="stylesheet" />
+
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/jquery-3.1.1.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/jquery-ui.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/jquery.dataTables.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.jqueryui.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.buttons.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/buttons.jqueryui.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.select.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/moment.js}"></script>
+
+<script type="text/javascript" th:inline="javascript">
+	$(document).ready(function(){
+		
+		var dialog, form;
+		
+		var table = $('#datatable').DataTable({
+			"ajax" : [[@{/datatables/ajax}]],
+			"columns" : [
+				{"aaData" : "isbn"},
+				{"aaData" : "title"},
+				{"aaData" : "dateOfPublication"}
+			],
+			"columnDefs" : [{
+				"targets" : 2,
+				"data" : "dateOfPublication",
+				"render" : function(data, type, full, meta) {
+								console.log('Inside render...');
+								var date = full[2];
+								console.log(date);
+								console.log(meta);
+								
+						        return moment(date).format('L');
+						   }				
+			}]
+		});
+			
+		dialog = $("#dialog-form").dialog({
+			autoOpen : false,
+			height : 400, 
+			width : 350,
+			modal : true,
+			buttons : {
+				"Delete" : function() {
+					var formData = {};
+					
+					formData["isbn"]=$("#ajax-form #isbn").val();
+					
+					$.ajax({
+						type : "POST",
+						contentType : "application/json",
+						url : [[@{/deleteBook}]],
+						data : JSON.stringify(formData),
+						dataType : 'json',
+						timeout : 100000,
+						success : function(data) {
+							console.log("SUCCESS: ", data);
+							table.ajax.reload();
+						},
+						error : function(e) {
+							console.log("ERROR: ", e);
+						},
+						done : function(e) {
+							console.log("DONE");
+						}
+					});
+					dialog.dialog("close");
+				},
+				"Save" : function() {
+					var formData = {};
+					
+					formData["isbn"]=$("#ajax-form #isbn").val();
+					formData["title"]=$("#ajax-form #title").val();
+					formData["dateOfPublication"]=$("#ajax-form #dateOfPublication").val();
+					
+					$.ajax({
+						type : "POST",
+						contentType : "application/json",
+						url : [[@{/saveBook}]],
+						data : JSON.stringify(formData),
+						dataType : 'json',
+						timeout : 100000,
+						success : function(data) {
+							console.log("SUCCESS: ", data);
+							table.ajax.reload();
+						},
+						error : function(e) {
+							console.log("ERROR: ", e);
+						},
+						done : function(e) {
+							console.log("DONE");
+						}
+					});
+					dialog.dialog("close");
+				},
+				"Cancel" : function() {
+					dialog.dialog("close");
+				}
+			},
+			close: function() {
+				form[0].reset();
+			}
+		});
+		
+		form = dialog.find( "form" ).on( "submit", function( event ) {
+		      event.preventDefault();
+		});
+		
+		$('#datatable tbody').on('click', 'tr', function () {
+	        var data = table.row( this ).data();
+	        $('#isbn').val(data[0]);
+	        $('#title').val(data[1]);
+	        $('#dateOfPublication').val(moment(data[2]).format('L'));
+	        $('#dialog-form').dialog('option', 'title', 'Modify Book');
+	        dialog.dialog("open");
+	    } );
+		
+		$('#addBook').on('click', function() {
+			$('#dialog-form').dialog('option', 'title', 'New Book');
+	        dialog.dialog("open");
+		});
+		
+	});
+</script>
+
+<title>Spring Framework</title>
+
+</head>
+
+<body class="dt-example">
+
+	<div align="center">
+
+		<h1>Books</h1>
+		<h1>
+			<a href="#" id="addBook"><span>New Book</span></a>
+		</h1>
+
+		<div id="default_form">
+			<table id="datatable" class="display">
+				<thead>
+					<tr>
+						<th>ISBN</th>
+						<th>Title</th>
+						<th>Date of Publication</th>
+					</tr>
+				</thead>
+				<tfoot>
+					<tr>
+						<th>ISBN</th>
+						<th>Title</th>
+						<th>Date of Publication</th>
+					</tr>
+				</tfoot>
+			</table>
+		</div>
+
+	</div>
+
+	<div id="dialog-form" title="CRUD Operations">
+		<form id="ajax-form">
+			<fieldset>
+				<label for="isbn">ISBN</label> <input type="text" name="isbn" id="isbn" value="" class="text ui-widget-content ui-corner-all">
+				<label for="title">Title</label> <input type="text" name="title" id="title" value="" class="text ui-widget-content ui-corner-all">
+				<label for="dateOfPublication">Date</label> <input type="text" name="dateOfPublication" id="dateOfPublication" value="" class="text ui-widget-content ui-corner-all"> 
+				<input type="submit" tabindex="-1" style="position: absolute; top: -1000px">
+			</fieldset>
+		</form>
+	</div>
+
+
+
+</body>
+
+</html>

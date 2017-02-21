@@ -1,0 +1,32 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+
+<meta http-equiv="Content-Type" content="text/html; charset=UTF-8">
+
+<link th:href="@{/static/css/demo.css}" rel="stylesheet" />
+<link th:href="@{/static/css/styles.css}" rel="stylesheet" />
+	
+<title>Spring Framework</title>
+
+</head>
+
+<body class="dt-example">
+	
+	<div class="container">
+		<section>
+			<h1>Spring Framework <span>MVC Example</span></h1>
+		</section>
+	</div>
+	
+	<form action = "#" th:action = "@{/redirect}" method = "post">
+		<div class="buttons">
+			<button name="button" type="submit" value="button1" 
+			class="ui-button ui-corner-all ui-widget-style center_button"> CRUD Operations</button>
+		</div>
+	</form>
+
+</body>
+
+</html>

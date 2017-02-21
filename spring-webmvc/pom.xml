@@ -1,32 +1,172 @@
 <?xml version="1.0"?>
-<project xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd" xmlns="http://maven.apache.org/POM/4.0.0"
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <modelVersion>4.0.0</modelVersion>
-  <parent>
-    <groupId>com.roger.spring</groupId>
-    <artifactId>spring-application</artifactId>
-    <version>1.0</version>
-  </parent>
-  
-  <artifactId>spring-webmvc</artifactId>
-  <name>spring-webmvc</name>
-  <version>1.0</version>
-  <packaging>war</packaging>
-  <url>http://maven.apache.org</url>
-  
-  <properties>
-    <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-  </properties>
-  <build>
-    <plugins>
-    	<plugin>
-    		<groupId>org.apache.maven.plugins</groupId>
-    		<artifactId>maven-war-plugin</artifactId>
-    		<version>2.6</version>
-    		<configuration>
-    			<failOnMissingWebXml>false</failOnMissingWebXml>
-    		</configuration>
-    	</plugin>
-    </plugins>
-  </build>
-  </project>
+<project
+	xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd"
+	xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+	<modelVersion>4.0.0</modelVersion>
+	<parent>
+		<groupId>com.roger.spring</groupId>
+		<artifactId>spring-application</artifactId>
+		<version>1.0</version>
+	</parent>
+
+	<artifactId>spring-webmvc</artifactId>
+	<name>spring-webmvc</name>
+	<version>1.0</version>
+	<url>http://maven.apache.org</url>
+
+	<properties>
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<commonsLang3_version>3.4</commonsLang3_version>
+		<slf4j_version>1.7.12</slf4j_version>
+		<log4j_version>1.2.17</log4j_version>
+		<spring_version>4.3.6.RELEASE</spring_version>
+
+		<!-- Thymeleaf libraries -->
+		<thymeleaf_version>3.0.2.RELEASE</thymeleaf_version>
+		<thymeleaf_layout_dialect_version>2.1.2</thymeleaf_layout_dialect_version>
+
+		<!-- Javascript dependencies -->
+		<moment_version>2.14.1</moment_version>
+		<toastr_version>2.1.2</toastr_version>
+
+		<javax_servlet_api_version>3.1.0</javax_servlet_api_version>
+	</properties>
+
+	<dependencies>
+		<dependency>
+			<groupId>com.roger.spring</groupId>
+			<artifactId>spring-services</artifactId>
+			<version>1.0</version>
+		</dependency>
+
+		<dependency>
+			<groupId>org.apache.commons</groupId>
+			<artifactId>commons-lang3</artifactId>
+			<version>${commonsLang3_version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- SLF4 dependencies -->
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-api</artifactId>
+			<version>${slf4j_version}</version>
+			<scope>compile</scope>
+		</dependency>
+		<dependency>
+			<groupId>org.slf4j</groupId>
+			<artifactId>slf4j-log4j12</artifactId>
+			<version>${slf4j_version}</version>
+			<scope>compile</scope>
+
+		</dependency>
+		<dependency>
+			<groupId>log4j</groupId>
+			<artifactId>log4j</artifactId>
+			<version>${log4j_version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Spring Dependencies -->
+		<dependency>
+			<groupId>org.springframework</groupId>
+			<artifactId>spring-webmvc</artifactId>
+			<version>${spring_version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<!-- Thymeleaf dependencies -->
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf</artifactId>
+			<version>${thymeleaf_version}</version>
+			<scope>compile</scope>
+
+		</dependency>
+		<dependency>
+			<groupId>org.thymeleaf</groupId>
+			<artifactId>thymeleaf-spring4</artifactId>
+			<version>${thymeleaf_version}</version>
+			<scope>compile</scope>
+
+		</dependency>
+		<dependency>
+			<groupId>nz.net.ultraq.thymeleaf</groupId>
+			<artifactId>thymeleaf-layout-dialect</artifactId>
+			<version>${thymeleaf_layout_dialect_version}</version>
+			<scope>compile</scope>
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars.bower</groupId>
+			<artifactId>moment</artifactId>
+			<version>${moment_version}</version>
+			<scope>compile</scope>
+
+		</dependency>
+
+		<dependency>
+			<groupId>org.webjars</groupId>
+			<artifactId>toastr</artifactId>
+			<version>${toastr_version}</version>
+			<scope>compile</scope>
+			<exclusions>
+				<exclusion>
+					<artifactId>jquery</artifactId>
+					<groupId>org.webjars</groupId>
+				</exclusion>
+			</exclusions>
+		</dependency>
+
+		<!-- JSON dependencies -->
+
+		<dependency>
+			<groupId>com.fasterxml.jackson.core</groupId>
+			<artifactId>jackson-databind</artifactId>
+		</dependency>
+
+		<dependency>
+			<groupId>org.json</groupId>
+			<artifactId>json</artifactId>
+		</dependency>
+
+		<!-- Servlet dependencies -->
+		<dependency>
+			<groupId>javax.servlet</groupId>
+			<artifactId>javax.servlet-api</artifactId>
+			<version>${javax_servlet_api_version}</version>
+			<scope>provided</scope>
+		</dependency>
+	</dependencies>
+
+	<build>
+		<plugins>
+			<plugin>
+				<artifactId>maven-compiler-plugin</artifactId>
+			</plugin>
+			<plugin>
+				<groupId>org.eclipse.jetty</groupId>
+				<artifactId>jetty-maven-plugin</artifactId>
+				<version>9.4.0.v20161208</version>
+				<configuration>
+					<scanIntervalSeconds>10</scanIntervalSeconds>
+					<webApp>
+						<contextPath>/spring4-v1</contextPath>
+					</webApp>
+				</configuration>
+			</plugin>
+
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-eclipse-plugin</artifactId>
+				<version>2.10</version>
+				<configuration>
+					<downloadSources>true</downloadSources>
+					<downloadJavadocs>true</downloadJavadocs>
+					<wtpversion>2.0</wtpversion>
+					<wtpContextName>spring4-v1</wtpContextName>
+				</configuration>
+			</plugin>
+		</plugins>
+	</build>
+</project>
