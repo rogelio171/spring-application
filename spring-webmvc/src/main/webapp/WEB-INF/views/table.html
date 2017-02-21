@@ -23,11 +23,7 @@
 <script type="text/javascript" th:inline="javascript">
 	$(document).ready(function(){
 		
-		var dialog, form,
-		 
-	      isbn = $( "#isbn" ),
-	      title = $( "#title" ),
-	      date = $( "#dateOfPublication" );
+		var dialog, form;
 		
 		var table = $('#datatable').DataTable({
 			"ajax" : [[@{/datatables/ajax}]],
@@ -37,10 +33,6 @@
 				{"aaData" : "dateOfPublication"}
 			]
 		});
-		
-		setInterval( function () {
-		    table.ajax.reload();
-		}, 1000 );
 			
 		dialog = $("#dialog-form").dialog({
 			autoOpen : false,
@@ -49,7 +41,29 @@
 			modal : true,
 			buttons : {
 				"Delete" : function() {
+					var formData = {};
 					
+					formData["isbn"]=$("#ajax-form #isbn").val();
+					
+					$.ajax({
+						type : "POST",
+						contentType : "application/json",
+						url : [[@{/deleteBook}]],
+						data : JSON.stringify(formData),
+						dataType : 'json',
+						timeout : 100000,
+						success : function(data) {
+							console.log("SUCCESS: ", data);
+							table.ajax.reload();
+						},
+						error : function(e) {
+							console.log("ERROR: ", e);
+						},
+						done : function(e) {
+							console.log("DONE");
+						}
+					});
+					dialog.dialog("close");
 				},
 				"Save" : function() {
 					var formData = {};
@@ -67,6 +81,7 @@
 						timeout : 100000,
 						success : function(data) {
 							console.log("SUCCESS: ", data);
+							table.ajax.reload();
 						},
 						error : function(e) {
 							console.log("ERROR: ", e);

@@ -30,6 +30,7 @@ public class BookController {
 	private static final String HOME = "\n..:: Home ::..\n";
 	private static final String BUTTON_ACTION_METHOD_MSG = "\n>> Redirecting to table view...\n";
 	private static final String DATATABLE_METHOD_MSG = "\n>> Refreshing table view...\n";
+	private static final String DELETEBOOK_METHOD_MSG = "\n>> Deleting book...\n";
 	private static final String GETBOOKGRID_METHOD_MSG = "\n>> Loading data into table...\n";
 	private static final String SAVEBOOK_METHOD_MSG = "\n>> Saving book...\n";
 
@@ -97,6 +98,19 @@ public class BookController {
 		LOGGER.info("Book: " + book );
 		
 		bookRepository.save(book);
+		
+		return new JSONObject().put("msg", "success").toString();
+
+	}
+	
+	@RequestMapping(value = "/deleteBook", method=RequestMethod.POST, consumes = MediaType.APPLICATION_JSON_VALUE,
+			produces = MediaType.APPLICATION_JSON_VALUE)
+	@ResponseBody
+	public String deleteBook(@RequestBody Book book) {
+		LOGGER.info(DELETEBOOK_METHOD_MSG);
+		LOGGER.info("Book: " + book );
+		
+		bookRepository.delete(book);
 		
 		return new JSONObject().put("msg", "success").toString();
 
