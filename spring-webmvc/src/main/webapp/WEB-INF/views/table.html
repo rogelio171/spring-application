@@ -19,6 +19,7 @@
 <script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.buttons.min.js}"></script>
 <script type="text/javascript" th:inline="javascript" th:src="@{/static/js/buttons.jqueryui.min.js}"></script>
 <script type="text/javascript" th:inline="javascript" th:src="@{/static/js/dataTables.select.min.js}"></script>
+<script type="text/javascript" th:inline="javascript" th:src="@{/static/js/moment.js}"></script>
 
 <script type="text/javascript" th:inline="javascript">
 	$(document).ready(function(){
@@ -31,7 +32,19 @@
 				{"aaData" : "isbn"},
 				{"aaData" : "title"},
 				{"aaData" : "dateOfPublication"}
-			]
+			],
+			"columnDefs" : [{
+				"targets" : 2,
+				"data" : "dateOfPublication",
+				"render" : function(data, type, full, meta) {
+								console.log('Inside render...');
+								var date = full[2];
+								console.log(date);
+								console.log(meta);
+								
+						        return moment(date).format('L');
+						   }				
+			}]
 		});
 			
 		dialog = $("#dialog-form").dialog({
@@ -109,7 +122,7 @@
 	        var data = table.row( this ).data();
 	        $('#isbn').val(data[0]);
 	        $('#title').val(data[1]);
-	        $('#dateOfPublication').val(data[2]);
+	        $('#dateOfPublication').val(moment(data[2]).format('L'));
 	        $('#dialog-form').dialog('option', 'title', 'Modify Book');
 	        dialog.dialog("open");
 	    } );
